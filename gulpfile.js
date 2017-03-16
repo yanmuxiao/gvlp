@@ -5,7 +5,8 @@ var useref = require('gulp-useref');
 var uglify = require('gulp-uglify');
 var gulpIf = require('gulp-if');
 var cleanCss = require('gulp-clean-css');
-// var imagemin = require('gulp-imagemin');
+var imagemin = require('gulp-imagemin');
+var cache = require('gulp-cache');
 
 
 
@@ -29,11 +30,11 @@ gulp.task('hello', function() {
 
 
 // Node中的通配符
-// gulp.task('node_tongpeifu', function() {
-// 	return gulp.src('app/scss/*.scss')
-// 		.pipe(sass())
-// 		.pipe(gulp.dest('app/css'));
-// })
+gulp.task('node_tongpeifu', function() {
+	return gulp.src('app/scss/*.scss')
+		.pipe(sass())
+		.pipe(gulp.dest('app/css'));
+})
 
 
 // 监听Sass文件, 需要用到sass任务
@@ -92,15 +93,19 @@ gulp.task('hello', function() {
 //     .pipe(gulp.dest('dist'));
 // });
 // 压缩合并的js和css
-gulp.task('useref', function() {
-  return gulp.src('app/*.html')
-    .pipe(useref())
-    .pipe(gulpIf('*.js', uglify()))
-    .pipe(gulpIf('*.css', cleanCss()))
-    .pipe(gulp.dest('dist'));
-});
+// gulp.task('useref', function() {
+//   return gulp.src('app/*.html')
+//     .pipe(useref())
+//     .pipe(gulpIf('*.js', uglify()))
+//     .pipe(gulpIf('*.css', cleanCss()))
+//     .pipe(gulp.dest('dist'));
+// });
 
 
+
+
+
+// 优化图片
 // gulp.task('images', function() {
 // 	return gulp.src('app/images/**/*.+(png|jpg|gif|svg)')
 // 		.pipe(imagemin())
@@ -108,6 +113,16 @@ gulp.task('useref', function() {
 // })
 
 
+
+// 压缩图片可能会占用较长时间，使用 gulp-cache 插件可以减少重复压缩。
+gulp.task('imagesCache', function(){
+  return gulp.src('app/images/**/*.+(png|jpg|jpeg|gif|svg)')
+  // Caching images that ran through imagemin
+  .pipe(cache(imagemin({
+      interlaced: true
+    })))
+  .pipe(gulp.dest('dist/images'))
+});
 
 
 
