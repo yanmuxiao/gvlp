@@ -53,35 +53,34 @@ gulp.task('node_tongpeifu', function() {
 
 
 // 使用Browser Sync自动刷新
-// gulp.task('browserSync', function() {
-// 	browserSync({
-// 		server: {
-// 			baseDir: 'app'
-// 		}
-// 	})
-// })
+gulp.task('browserSync', function() {
+	browserSync({
+		server: {
+			baseDir: 'app'
+		}
+	})
+})
 
+gulp.task('sass', function() {
+	return gulp.src('app/scss/**/*scss')
+		.pipe(sass())
+		.pipe(gulp.dest('app/css'))
+		.pipe(browserSync.reload({
+			stream: true
+		}))
+})
 
-// gulp.task('sass', function() {
-// 	return gulp.src('app/scss/**/*scss')
-// 		.pipe(sass())
-// 		.pipe(gulp.dest('app/css'))
-// 		.pipe(browserSync.reload({
-// 			stream: true
-// 		}))
-// })
-
-// gulp.task('watch', ['browserSync', 'sass'], function() {
-// 	gulp.watch('app/scss/**/*.scss', ['sass']);
-// 	//Other watchers
+gulp.task('watch', ['browserSync', 'sass'], function() {
+	gulp.watch('app/scss/**/*.scss', ['sass']);
+	//Other watchers
 	
-// 	// html
-// 	gulp.watch('app/*.html', browserSync.reload);
-// 	// js
-// 	gulp.watch('app/js/**/*.js', browserSync.reload);
+	// html
+	gulp.watch('app/*.html', browserSync.reload);
+	// js
+	gulp.watch('app/js/**/*.js', browserSync.reload);
 
 
-// })
+})
 
 
 
